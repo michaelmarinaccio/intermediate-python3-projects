@@ -1,0 +1,10 @@
+#lambda function = one-line shorthand function
+
+#normal function:
+def add_two(my_input):
+  return my_input + 2
+
+#lambda function:
+add_two = lambda my_input: my_input + 2
+
+check_if_A_grade = lambda grade: 'Got an A!' if grade >= 90 else 'Did not get an A.'
