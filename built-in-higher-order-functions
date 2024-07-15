@@ -1,0 +1,104 @@
+#--------------------Map------------------------------------
+
+#When called, map() applies the passed function to each and every element in the iterable and returns a map object. 
+The returned map object holds the results from applying the mapping function to each element in the passed iterable. 
+We will usually convert the map into a list to enable viewing and further use.
+
+returned_map_object = map(function, iterable)
+
+#example:
+
+def double(x):
+ return x*2
+ 
+int_list = [3, 6, 9]
+ 
+doubled = map(double, int_list)
+ 
+print(doubled)
+
+#output:
+
+<map at 0x7f1ca0f58090>
+
+#needs to be converted using:
+
+print(list(doubled))
+
+#output:
+
+[6, 12, 18]
+
+#can also be used with a lambda function:
+
+doubled = map(lambda input: input*2, int_list)
+ 
+print(list(doubled))
+
+#codeing question example:
+
+grade_list = [3.5, 3.7, 2.6, 95, 87]
+
+# Your code below:
+grades_100scale = map(lambda input: 
+ input*25 if input <= 4 else input, grade_list)
+# assign the result of your map function to the variable grades_100scale
+# convert grades_100scale to a list and save it as updated_grade_list 
+updated_grade_list = (list(grades_100scale))
+# print updated_grade_list
+print(updated_grade_list)
+
+#--------------------Filter------------------------------------
+
+#The filter() function accomplishes this goal by applying a passed filtering function to each element in the passed iterable. 
+The filtering function should be a function that returns a boolean value: True or False. 
+The returned filter object will hold only those elements of the passed iterable for which the filtering function returned True.
+
+returned_filter_object = filter(function, iterable)
+
+#coding question example:
+
+books = [["Burgess", 1985],
+ ["Orwell", "Nineteen Eighty-four"],
+  ["Murakami", "1Q85"],
+   ["Orwell", 1984],
+    ["Burgess", "Nineteen Eighty-five"],
+     ["Murakami", 1985]]
+
+# Your code below: 
+string_titles = filter(lambda book: isinstance(book[1], str), books)
+# assign the result of your filter function to the variable  string_titles
+
+# convert your filter object to a list stored in the variable string_titles_list
+string_titles_list = list(string_titles)
+# print the list string_titles_list
+print(string_titles_list)
+
+#--------------------Reduce------------------------------------
+
+#In contrast to the map() and filter() functions that are always available, the reduce() function must be imported from the functools module to use it.
+Rather than returning a reduce object as might be expected after learning about map() and filter(), reduce() returns a single value. 
+To get to this single value, reduce() cumulatively applies a passed function to each sequential pair of elements in an iterable.
+
+#example:
+
+from functools import reduce
+int_list = [3, 6, 9, 12]
+reduced_int_list = reduce(lambda x,y: x*y, int_list)
+print(reduced_int_list)
+
+#output:
+1944
+
+#coding question example:
+
+letters = ['r', 'e', 'd', 'u', 'c', 'e']
+
+# your code below:
+from functools import reduce
+# remember to import the reduce function
+word = reduce(lambda x,y: x+y, letters)
+# store the result of your reduce function in the variable word
+print(word)
+
+# print word
