@@ -1,0 +1,49 @@
+import itertools
+from roster import student_roster
+
+student_roster_iterator = iter(student_roster)
+
+#for i in range(1, 11):
+  #print(next(student_roster_iterator))
+
+class ClassroomOrganizer():
+  def __init__(self, student_roster):
+    self.sorted_students = sorted(student_roster, key=lambda student: student["name"])
+    self.index = 0
+  
+  def __iter__(self):
+    return self
+  
+  def __next__(self):
+    if self.index < len(self.sorted_students):
+      student = self.sorted_students[self.index]["name"]
+      self.index += 1
+      return student
+    else:
+      raise StopIteration
+  
+  def table_combinations(self):
+    return list(itertools.combinations(self.sorted_students, 2))
+  
+  def get_students_with_subject(self, subject):
+    selected_students = []
+    for student in student_roster:
+      if student['favorite_subject'] == "Math":
+        selected_students.append((student['name'], "Math"))
+    for student in student_roster:
+      if student['favorite_subject'] == "Science":
+        selected_students.append((student['name'], "Science"))
+    return list(itertools.combinations(selected_students, 4))
+ 
+
+organizer = ClassroomOrganizer(student_roster)
+for student_name in organizer:
+  print(student_name)
+
+table_combinations = organizer.table_combinations()
+for combination in table_combinations:
+  print(combination)
+
+table_combinations_afterschool = organizer.get_students_with_subject("Math or Science")
+for combination in table_combinations_afterschool:
+  print(combination)
