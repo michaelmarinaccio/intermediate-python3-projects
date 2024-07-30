@@ -1,0 +1,66 @@
+guests = {}
+def read_guestlist(file_name):
+  text_file = open(file_name,'r')
+  while True:
+    line_data = text_file.readline().strip().split(",")
+    if len(line_data) < 2:
+    # If no more lines, close file
+      text_file.close()
+      break
+    name = line_data[0]
+    age = int(line_data[1])
+    guests[name] = age
+    new_guest = yield name
+    if new_guest:
+      new_name, new_age = new_guest.split(",")
+      guests[new_name] = int(new_age)
+      yield new_name
+    
+guestlist = read_guestlist('guest_list.txt')
+for i, guest in enumerate(guestlist):
+  if i >= 10:
+    break
+  print(guest)
+
+next(guestlist)
+
+guestlist.send("Jane,35")
+
+for guest in guestlist:
+  print(guest)
+
+over_21 = (name for name, age in guests.items() if age >= 21)
+
+for guest in over_21:
+  print(guest)
+
+def table_1_gen():
+  for seat in range(1,6):
+    yield ("Chicken", "Table 1", f"Seat {seat}")
+def table_2_gen():
+  for seat in range(1,6):
+    yield ("Beef", "Table 2", f"Seat {seat}")
+def table_3_gen():
+  for seat in range(1,6):
+    yield ("Fish", "Table 3", f"Seat {seat}")
+
+def seat_generator(guests, table_gens):
+    guest_names = list(guests.keys())
+    for i, guest in enumerate(guest_names):
+        table_gen = table_gens[i // 5]
+        yield (guest, next(table_gen))
+
+
+table_1 = table_1_gen()
+table_2 = table_2_gen()
+table_3 = table_3_gen()
+
+
+table_gens = [table_1, table_2, table_3]
+
+
+seating_chart = seat_generator(guests, table_gens)
+
+
+for seat in seating_chart:
+    print(seat)
