@@ -1,0 +1,150 @@
+#-----------------------recap: python containers------------------------
+#Any object which stores data is called a container
+#Lists are an ordered group of elements. Elements can be added, removed, accessed, and modified.
+#Tuples are immutable objects which group multiple elements together. They are similar to lists, except that they cannot be modified once created.
+#Dictionaries are unordered groups of key-value pairs.
+#Sets are unordered groups of elements that cannot contain duplicates, elements cannot be modified.
+
+  # Write your code below!
+company_name = "Il-Ħwejjeġ"
+company_location = (35.896023, 14.484886)
+company_products = ["għonnella", "ċuqlana", "geżwira", "ħorġa", "terħa"]
+company_data = {'name': company_name, 'location': company_location, 'products': company_products}
+
+#-----------------------introduction to specialized containers------------------------
+
+#-----------------------deque------------------------
+
+#These are similar to lists, but they are optimized for appending and popping to the front and back, rather than having optimized accessing. 
+#Because of this, they are great for working with data where you don’t need to access elements in the middle very often or at all.
+
+from helper_functions import process_csv_supplies
+from collections import deque
+
+# The first row is skipped since it only contains labels
+csv_data = process_csv_supplies()[1:]
+
+# Here is a sample of 2 elements in csv_data:
+# [ ['nylon', '10', 'unimportant'], ['wool', '1', 'important'] ]
+
+# Write your code below!
+supplies_deque = deque()
+for row in csv_data:
+    if row[2] == 'important':
+        supplies_deque.appendleft(tuple(row))
+    else:
+        supplies_deque.append(tuple(row))
+
+ordered_important_supplies = deque()
+for _ in range(25):
+    ordered_important_supplies.append(supplies_deque.popleft())
+
+ordered_unimportant_supplies = deque()
+for _ in range(10):
+  ordered_unimportant_supplies.append(supplies_deque.pop())
+
+#-----------------------named tuple------------------------
+
+#The namedtuple collection allows us to have an immutable tuple object, but every element becomes self-documented. 
+
+clothes = [('t-shirt', 'green', 'large', 9.99),
+           ('jeans', 'blue', 'medium', 14.99),
+           ('jacket', 'black', 'x-large', 19.99),
+           ('t-shirt', 'grey', 'small', 8.99),
+           ('shoes', 'white', '12', 24.99),
+           ('t-shirt', 'grey', 'small', 8.99)]
+
+# Write your code below!
+from collections import namedtuple
+
+ClothingItem = namedtuple("ClothingItem", ["type", "color", "size", "price"])
+
+new_coat = ClothingItem("coat", "black", "small", 14.99)
+
+coat_cost = new_coat.price
+
+updated_clothes_data = []
+
+for item in clothes:
+  updated_clothes_data.append(ClothingItem(item[0], item[1], item[2], item[3]))
+print(updated_clothes_data)
+
+#-----------------------DefaultDict------------------------
+
+#Dealing with frequent KeyError exceptions can be quite cumbersome and in certain cases, it might be better to avoid throwing an error. 
+#One of the ways Python offers to deal with this issue is by having a default missing value in the dictionary, and this is exactly what the defaultdict collection does.
+
+
+site_locations = {'t-shirt': 'Shirts',
+                  'dress shirt': 'Shirts',
+                  'flannel shirt': 'Shirts',
+                  'sweatshirt': 'Shirts',
+                  'jeans': 'Pants',
+                  'dress pants': 'Pants',
+                  'cropped pants': 'Pants',
+                  'leggings': 'Pants'
+                  }
+updated_products = ['draped blouse', 'leggings', 'undershirt', 'dress shirt', 'jeans', 'sun dress', 'flannel shirt', 'cropped pants', 'dress pants', 't-shirt', 'camisole top', 'sweatshirt']
+
+# Write your code below!
+from collections import defaultdict
+
+validated_locations = defaultdict(lambda: 'TODO: Add to website')
+
+validated_locations.update(site_locations)
+
+for item in updated_products:
+  site_locations[item] = validated_locations[item]
+
+print(site_locations)
+
+#-----------------------OrderedDict------------------------
+
+#The OrderedDict container allows us to access values using keys, but it also preserves the order of the elements inside of it. 
+
+from collections import OrderedDict
+
+# The first 15 orders are provided
+order_data = [['Order: 1', 'purchased'],
+              ['Order: 2', 'purchased'],
+              ['Order: 3', 'purchased'],
+              ['Order: 4', 'returned'],
+              ['Order: 5', 'purchased'],
+              ['Order: 6', 'canceled'],
+              ['Order: 7', 'returned'],
+              ['Order: 8', 'purchased'],
+              ['Order: 9', 'returned'],
+              ['Order: 10', 'canceled'],
+              ['Order: 11', 'purchased'],
+              ['Order: 12', 'returned'],
+              ['Order: 13', 'purchased'],
+              ['Order: 14', 'canceled'],
+              ['Order: 15', 'purchased']]
+
+# Write your code below!
+orders = OrderedDict(order_data)
+
+to_move = []
+to_remove = []
+
+for order, status in orders.items():
+  if status == "returned":
+    to_move.append(order)
+  elif status == "canceled":
+    to_remove.append(order)
+
+for order in to_remove:
+  orders.pop(order)
+
+for order in to_move:
+  orders.move_to_end(order)
+
+print(orders)
+
+#-----------------------ChainMap------------------------
+
+
+  
+#-----------------------DefaultDict------------------------
+
+#-----------------------DefaultDict------------------------
